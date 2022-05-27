@@ -1,15 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
+import HomePage from './views/homepage/HomePage';
 import reportWebVitals from './reportWebVitals';
+import { CtxBookmarksProvider } from './contextAPI/store';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <CtxBookmarksProvider>
+      <HomePage />
+    </CtxBookmarksProvider>
   </React.StrictMode>
 );
 
