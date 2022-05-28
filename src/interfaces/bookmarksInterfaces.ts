@@ -4,6 +4,7 @@ export interface VimeoItem {
     title: string,
     author_name: string,
     added_date: Date,
+    added_time: Date,
     upload_date: Date,
     duration: string,
     error?: string,
@@ -15,6 +16,7 @@ export interface FlickrItem {
     title: string,
     author_name: string,
     added_date: Date,
+    added_time: Date,
     height: number,
     width: number,
     error?: string

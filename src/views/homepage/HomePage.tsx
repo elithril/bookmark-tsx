@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import Bookmarks from '../../components/Bookmark';
 import { BookmarksContext } from '../../contextAPI/store';
 import { fetchInformations } from '../../services/bookmarks';
@@ -7,7 +7,15 @@ import './HomePage.css';
 const HomePage = () => {
   const { state, dispatch } = React.useContext(BookmarksContext);
 
-  // faire une routine qui passe toutes les minutes ajouter 1 au temps de upload_date (formatage il y a 1minute, il y a 1heure...)
+  useEffect(() => {
+    let inter: NodeJS.Timeout | undefined = undefined;
+    if (!inter && state.bookmarks.length > 0) {
+      inter = setInterval(() => 
+        dispatch({type: "updateTimes"})
+      , 60000);
+    }
+    return () => clearInterval(inter);
+  }, [state.bookmarks, dispatch])
 
   const handleClick = () => {
     fetchInformations(state.link)
@@ -16,15 +24,13 @@ const HomePage = () => {
           dispatch({type: 'apiError', payload: res.error!})
         }
         else {
-          // faire une fonction du bloc d'en dessous
           const payload = {...res};
           if ('duration' in payload) {
             const videoTime = new Date(payload.duration as any * 1000).toISOString().slice(11, 19);
             payload.duration = videoTime;
           }
-          console.log("new date =>", new Date())
           payload.added_date = new Date();
-          // format added_date to => il y a 1minute etc..
+          payload.added_time = new Date();
           dispatch({type: 'addBookmark', payload})
         }
     })
@@ -33,12 +39,7 @@ const HomePage = () => {
     })
   }
 
-  useEffect(() => {
-    console.log("state =>", state)
-  }, [state])
-
   const handleRemoveBookmark = (index: number) => {
-    console.log("index =>", index);
     dispatch({type: "removeBookmark", payload: index})
   }
 
@@ -49,13 +50,13 @@ const HomePage = () => {
         <input
           value={state.link}
           onChange={e => dispatch({type: 'changeLink', payload: e.target.value})}
-          placeholder="enter a link"
+          placeholder="Entrer un lien"
         />
         <button
           onClick={handleClick}
           disabled={state.link.length === 0}
         >
-          send !
+          Envoyer
         </button>
       </div>
       <div className="bookmarksContainer">

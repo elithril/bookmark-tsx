@@ -1,5 +1,4 @@
 import { FlickrItem, VimeoItem } from "../interfaces/bookmarksInterfaces";
-import { fetchInformations } from "../services/bookmarks";
 import { createCtx } from "./contextCreator";
 
 const initialState = { link: '', bookmarks: [] as (VimeoItem|FlickrItem)[], error: '' };
@@ -12,6 +11,7 @@ type Action =
   | { type: "addBookmark"; payload: VimeoItem | FlickrItem}
   | { type: "apiError"; payload: string}
   | { type: "removeBookmark"; payload: number }
+  | { type: "updateTimes" }
 
 function reducer(state: AppState, action: Action): AppState {
   switch (action.type) {
@@ -27,6 +27,13 @@ function reducer(state: AppState, action: Action): AppState {
         return {...state, error: '', bookmarks: splicedBookmarks}
     case "apiError":
         return {...state, error: action.payload}
+    case "updateTimes":
+      const updatedBookmarks = [...state.bookmarks];
+      updatedBookmarks.forEach(bookmark => {
+        const tmp = new Date(bookmark.added_time.setSeconds(bookmark.added_time.getSeconds()) + 1000 * 60)
+        bookmark.added_time = tmp;
+      })
+      return {...state, bookmarks: updatedBookmarks}
     default:
       throw new Error();
   }
