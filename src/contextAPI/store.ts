@@ -16,15 +16,15 @@ type Action =
 function reducer(state: AppState, action: Action): AppState {
   switch (action.type) {
     case "changeLink":
-        // fetchInformations('https://vimeo.com/76979871');
       return { ...state, link: action.payload };
     case "addBookmark":
         const tmp = [...state.bookmarks];
         tmp.push(action.payload);
-        return {...state, bookmarks: tmp, error: ''}
+        return {...state, bookmarks: tmp, error: '', link: ''}
     case "removeBookmark":
-        // remove avec l'index dans le payload
-        return {...state, error: ''}
+        const splicedBookmarks = [...state.bookmarks];
+        splicedBookmarks.splice(action.payload, 1);
+        return {...state, error: '', bookmarks: splicedBookmarks}
     case "apiError":
         return {...state, error: action.payload}
     default:
@@ -32,5 +32,5 @@ function reducer(state: AppState, action: Action): AppState {
   }
 }
 
-export const CountContext = ctx;
+export const BookmarksContext = ctx;
 export const CtxBookmarksProvider = BookmarksProvider;

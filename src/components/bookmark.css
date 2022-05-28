@@ -1,0 +1,7 @@
+.item-container {
+    padding: 1rem;
+    margin: 0 0 1rem 0;
+    min-height: 100px;
+    background-color: blue;
+    border: 1px solid white;
+}

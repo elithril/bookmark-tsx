@@ -9,7 +9,6 @@ export const fetchInformations = async (link: string): Promise<VimeoItem|FlickrI
   if (!res.ok) throw new Error(res.statusText);
     return res.json();
   } catch (err) {
-    console.log("err before =>", err)
     return Promise.reject(err)
   }
 }
