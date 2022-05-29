@@ -2,6 +2,82 @@
     padding: 1rem;
     margin: 0 0 1rem 0;
     min-height: 100px;
-    background-color: blue;
+    background-color: #F1EEE9;
     border: 1px solid white;
+    color: #15133C;
+}
+
+.flex-alignment {
+    display: flex;
+    justify-content: space-between;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    font-size: 16px;
+    margin-bottom: 1rem;
+}
+
+p {
+    margin: 0 0 0.5rem 0;
+}
+
+.remove-bookmark-button {
+    height: 50px;
+    cursor: pointer;
+}
+
+.bookmark-title {
+    font-size: 24px;
+    margin: 0 auto;
+    margin-bottom: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 600px;
+}
+
+.bookmark-title:hover {
+    white-space: inherit;
+    overflow: inherit;
+    text-overflow: unset;
+    max-width: 100%;
+}
+
+.bookmark-video-duration {
+    margin: 0.5rem 0 1rem 0;
+    font-size: 20px;
+}
+
+.bookmark-image-dimensions {
+    margin: 0.5rem 0 1rem 0;
+    font-size: 20px;
+}
+
+.bookmark-url {
+    font-size: 16px;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 350px;
+}
+
+.bookmark-url:hover {
+    white-space: inherit;
+    overflow: inherit;
+    text-overflow: unset;
+    max-width: 100%;
+}
+
+.bookmark-upload-date {
+    font-size: 16px;
+    margin: 0;
+}
+
+.bookmark-thumbnail {
+    max-width: 300px;
+    max-height: 200px;
 }

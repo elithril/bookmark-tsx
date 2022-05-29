@@ -5,7 +5,7 @@ export interface VimeoItem {
     author_name: string,
     added_date: Date,
     added_time: Date,
-    upload_date: Date,
+    upload_date: string,
     duration: string,
     error?: string,
 }

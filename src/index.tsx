@@ -3,19 +3,19 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import HomePage from './views/homepage/HomePage';
 import reportWebVitals from './reportWebVitals';
-import { CtxBookmarksProvider } from './contextAPI/store';
+import { CtxBookmarksProvider } from './contextAPI/bookmark-context';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  // disabled React.StricMode because we have a setInterval on dispatch and unless its production,
+  // disabled React.StrictMode because we have a setInterval on dispatch and unless this code run in production,
   // React intentionnally calls reducer twice to make any unexpected side effects more apparent.
-  // to keep the StrictMode active, we could check the environment then divide the *60 secs by 2 in the store.ts file
+  // To keep the StrictMode active, we could check the environment then divide the *60 secs by 2 in the bookmark-context.ts file for other environments than production
   // <React.StrictMode>
-    <CtxBookmarksProvider>
-      <HomePage />
-    </CtxBookmarksProvider>
+  <CtxBookmarksProvider>
+    <HomePage />
+  </CtxBookmarksProvider>
   // </React.StrictMode>
 );
 

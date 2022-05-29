@@ -1,82 +1,113 @@
 import React from 'react';
-import { FlickrItem, VimeoItem } from '../interfaces/bookmarksInterfaces';
+import { BookmarksContext } from '../contextAPI/bookmark-context';
+import { FlickrItem, VimeoItem } from '../interfaces/bookmarks-interfaces';
+import { convertMsToTime } from '../utils/convert-time';
 import './bookmark.css';
 
 interface BookmarksProps {
-  items: (VimeoItem|FlickrItem)[];
-  removeBookmark: (index: number) => void;
+  items: (VimeoItem | FlickrItem)[];
 }
 
-export default function Bookmarks({ items, removeBookmark }: BookmarksProps) {
+interface TopContainerInformationsProps {
+  index: number,
+  addedTime: Date,
+  addedDate: Date,
+  author: string,
+}
 
-  function padTo2Digits(num: number) {
-    return num.toString().padStart(2, '0');
+export default function Bookmarks({ items }: BookmarksProps) {
+  const { dispatch } = React.useContext(BookmarksContext);
+
+  const handleRemoveBookmark = (index: number) => {
+    dispatch({ type: "removeBookmark", payload: index })
   }
-  
-  function convertMsToTime(milliseconds: number) {
-    let seconds = Math.floor(milliseconds / 1000);
-    let minutes = Math.floor(seconds / 60);
-    const hours = Math.floor(minutes / 60);
-  
-    seconds = seconds % 60;
-    minutes = minutes % 60;
-  
-    if (hours === 0 && minutes === 0) {
-      return "Il y a moins d'une minute"
-    } else if (hours === 0 && minutes > 0) {
-      return `Il y a ${padTo2Digits(minutes)} minute${minutes > 1 ? 's' : ''}`
-    } else {
-      return `Il y a ${padTo2Digits(hours)} heures et ${padTo2Digits(minutes)} minute${minutes > 1 ? 's' : ''}`
-    }
+
+  const TopContainerInformations = ({ index, addedTime, addedDate, author }: TopContainerInformationsProps) => {
+    const formatedAddedTime = convertMsToTime(addedTime.getTime() - addedDate.getTime())
+
+    return (
+      <div className="flex-alignment">
+        <div className="flex-column">
+          <p>Ajouté {formatedAddedTime}</p>
+          <p>Auteur: {author}</p>
+        </div>
+        <button
+          onClick={() => handleRemoveBookmark(index)}
+          className="remove-bookmark-button"
+        >
+          Supprimer
+        </button>
+      </div>
+    )
   }
 
   return (
     <div>
       {items.map((item, index) => {
-        const formatedAddedTime = convertMsToTime(item.added_time.getTime() - item.added_date.getTime())
+        const { added_time, added_date, author_name } = item;
         if ("duration" in item)
+          // if duration property exist, it's a VimeoItem
           return (
             <div
               key={`vimeo-item-${index + 1}`}
               className="item-container"
             >
-              <button
-                onClick={() => removeBookmark(index)}
-              >
-                remove bookmark
-              </button>
+              <TopContainerInformations
+                index={index}
+                addedTime={added_time}
+                addedDate={added_date}
+                author={author_name}
+              />
+              <p className="bookmark-title">
+                {item.title}
+              </p>
               <img
                 src={item.thumbnail_url}
                 alt={`vimeo-thumbnail-${item.title}`}
+                className="bookmark-thumbnail"
               />
-              <p>url: {item.url}</p>
-              <p>titre: {item.title}</p>
-              <p>author: {item.author_name}</p>
-              <p>added date: {formatedAddedTime}</p>
-              <p>upload date: {item.upload_date.toString()}</p>
-              <p>duration: {item.duration}</p>
+              <p className="bookmark-video-duration">
+                Durée: {item.duration}
+              </p>
+              <div className="flex-alignment">
+                <p className="bookmark-url">
+                  Url: {item.url}
+                </p>
+                <p className="bookmark-upload-date">
+                  Date de publication: Le {item.upload_date}
+                </p>
+              </div>
             </div>
           );
 
+        //else it's a FlickrItem
         return (
           <div
-            key={`flickr-item--${index + 1}`}
+            key={`flickr-item-${index + 1}`}
             className="item-container"
           >
-            <button
-              onClick={() => removeBookmark(index)}
-            >
-              remove bookmark
-            </button>
+            <TopContainerInformations
+              index={index}
+              addedTime={added_time}
+              addedDate={added_date}
+              author={author_name}
+            />
+            <p className="bookmark-title">
+              {item.title}
+            </p>
             <img
               src={item.thumbnail_url}
               alt={`flickr-thumbnail-${item.title}`}
+              className="bookmark-thumbnail"
             />
-            <p>url: {item.url}</p>
-            <p>title: {item.title}</p>
-            <p>author: {item.author_name}</p>
-            <p>added date: {formatedAddedTime}</p>
-            <p>dimensions: {item.width} x {item.height}</p>
+            <p className="bookmark-image-dimensions">
+              Dimensions: {item.width} x {item.height}
+            </p>
+            <div className="flex-alignment">
+              <p className="bookmark-url">
+                Url: {item.url}
+              </p>
+            </div>
           </div>
         );
       })}

@@ -1,15 +1,14 @@
 .homepage {
   text-align: center;
-  background-color: #282c34;
+  background-color: #343434;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: #343434;
 }
 
 .inputContainer {
-  /* height: 100px; */
   max-width: 1250px;
   min-width: 675px;
   margin: 1rem auto;
@@ -18,9 +17,13 @@
 .bookmarksContainer {
   height: 700px;
   overflow: auto;
-  max-width: 1250px;
-  min-width: 675px;
+  width: 700px;
   margin: 0 auto;
-  border: 1px solid white;
+  border: 1px solid grey;
   padding: 1rem;
+  background-color: #15133C;
+}
+
+.error-title {
+  color: white;
 }
